@@ -28,8 +28,6 @@ public class SignUpStudentRequestDto {
     private String username;
 
     @NotBlank(message = "Phone number is required")
-    @Size(min = 9, max = 9, message = "Phone number must be 9 characters")
-    @Pattern(regexp = "\\d{9}", message = "Phone number must be 9 digits")
     private String phoneNumber;
 
     @NotBlank(message = "Email is required")

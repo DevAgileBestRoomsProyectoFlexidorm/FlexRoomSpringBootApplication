@@ -53,13 +53,21 @@ public class UserService implements IUserService {
     public ApiResponse<StudentSignUpResponseDto> signUpStudent(SignUpStudentRequestDto request) {
         //validar que el email y el número de celular no están registrados
         if (userRepository.existsByEmail(request.getEmail())){
-            throw new ApplicationException(HttpStatus.BAD_REQUEST, "The email given is already registered");
+            throw new ApplicationException(HttpStatus.ACCEPTED, "El correo electrónico proporcionado ya está registrado");
         }
-        if (userRepository.existsByPhoneNumber(request.getPhoneNumber())){
-            throw  new ApplicationException(HttpStatus.BAD_REQUEST, "The phone number given is already registered");
+        String regex = "^[0-9]{9}$";
+        if (request.getPhoneNumber() != null) {
+            if (userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
+                throw new ApplicationException(HttpStatus.ACCEPTED, "El número de teléfono proporcionado ya está registrado");
+            } else if (!request.getPhoneNumber().matches(regex)) {
+                throw new ApplicationException(HttpStatus.ACCEPTED, "El número de teléfono debe tener exactamente 9 caracteres");
+            }
+        } else {
+            throw new ApplicationException(HttpStatus.ACCEPTED, "El número de teléfono es obligatorio");
         }
+
         if (userRepository.existsByUsername(request.getUsername())){
-            throw  new ApplicationException(HttpStatus.BAD_REQUEST, "The username given is already registered");
+            throw  new ApplicationException(HttpStatus.ACCEPTED, "El nombre de usuario proporcionado ya está registrado");
         }
 
         //encriptar la contraseña desde el request
@@ -87,13 +95,21 @@ public class UserService implements IUserService {
     public ApiResponse<ArrenderResponseDto> signUpArrender(SignUpArrenderRequestDto request) {
         //validar que el email y el número de celular no estén registrados
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new ApplicationException(HttpStatus.BAD_REQUEST, "The email given is already registered");
+            throw new ApplicationException(HttpStatus.ACCEPTED, "El correo electrónico proporcionado ya está registrado");
         }
-        if (userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
-            throw new ApplicationException(HttpStatus.BAD_REQUEST, "The phone number given is already registered");
+        String regex = "^[0-9]{9}$";
+        if (request.getPhoneNumber() != null) {
+            if (userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
+                throw new ApplicationException(HttpStatus.ACCEPTED, "El número de teléfono proporcionado ya está registrado");
+            } else if (!request.getPhoneNumber().matches(regex)) {
+                throw new ApplicationException(HttpStatus.ACCEPTED, "El número de teléfono debe tener exactamente 9 caracteres");
+            }
+        } else {
+            throw new ApplicationException(HttpStatus.ACCEPTED, "El número de teléfono es obligatorio");
         }
-        if (userRepository.existsByUsername(request.getUsername())) {
-            throw new ApplicationException(HttpStatus.BAD_REQUEST, "The username given is already registered");
+
+        if (userRepository.existsByUsername(request.getUsername())){
+            throw  new ApplicationException(HttpStatus.ACCEPTED, "El nombre de usuario proporcionado ya está registrado");
         }
 
         //encriptar la contraseña desde el request
@@ -118,36 +134,45 @@ public class UserService implements IUserService {
 
     @Override
     public ApiResponse<UserSignInResponseDto> signIn(SignInUserRequestDto request) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
+        try{
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
 
-        //establece la seguridad
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            //establece la seguridad
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        //se obtiene el token
-        String token = jwtTokenProvider.generateToken(authentication);
+            //se obtiene el token
+            String token = jwtTokenProvider.generateToken(authentication);
 
-        //se obtiene el usuario autenticado
-        var authenticatedUser = (User) authentication.getPrincipal();
+            //se obtiene el usuario autenticado
+            var authenticatedUser = (User) authentication.getPrincipal();
 
-        //se obtienen los datos del usuario autenticado
-        var authenticatedUserData = userRepository.findByEmail(authenticatedUser.getUsername())
-                .orElseThrow(() -> new ResourceNotFoundException("No user with given email was found"));
+            //se obtienen los datos del usuario autenticado
+            var authenticatedUserData = userRepository.findByEmail(authenticatedUser.getUsername())
+                    .orElseThrow(() -> new ResourceNotFoundException("No user with given email was found"));
 
-        //3) convertir el objeto de tipo User (entity) a un objeto de tipo UserResponseDto (dto)
-        var userResponseDto = modelMapper.map(authenticatedUserData, UserSignInResponseDto.class);
-        userResponseDto.setToken(token);
+            //3) convertir el objeto de tipo User (entity) a un objeto de tipo UserResponseDto (dto)
+            var userResponseDto = modelMapper.map(authenticatedUserData, UserSignInResponseDto.class);
+            userResponseDto.setToken(token);
 
-        //4) obtener el tipo de usuario
-        var dtype = userRepository.findByUserId(authenticatedUserData.getUserId()).get().getClass().getSimpleName();
-        userResponseDto.setDtype(dtype);
+            //4) obtener el tipo de usuario
+            var dtype = userRepository.findByUserId(authenticatedUserData.getUserId()).get().getClass().getSimpleName();
+            userResponseDto.setDtype(dtype);
 
-        //retornar la respuesta
-        return new ApiResponse<>("OK", EStatus.SUCCESS, userResponseDto);
+            //retornar la respuesta
+            return new ApiResponse<>("OK", EStatus.SUCCESS, userResponseDto);
+        }catch (Exception ex){
+            var mensaje=ex.getMessage();
+            if("Credenciales erróneas".equals(mensaje)){
+                throw new ApplicationException(HttpStatus.ACCEPTED, ex.getMessage());
+            }else{
+                throw new ApplicationException(HttpStatus.BAD_REQUEST, ex.getMessage());
+            }
+        }
     }
 
     @Override
