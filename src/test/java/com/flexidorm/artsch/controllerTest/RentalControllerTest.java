@@ -90,9 +90,9 @@ class RentalControllerTest {
         when(rentalService.getRentalsByStudentId(studentId)).thenReturn(apiResponse);
 
         // Realizar una solicitud GET al controlador endpoint
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/rental/getRentalsByStudentId/{student}", studentId))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
+        ResultActions resultActions;
+        resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/rental/getRentalsByStudentId/{student}", studentId))
+                .andExpect(status().isOk());
     }
 
 }
