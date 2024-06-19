@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -38,7 +39,7 @@ class RentalControllerTest {
     @Mock
     private IRentalService rentalService;
 
-    /*@Test
+    @Test
     void testRegisterRental() throws Exception {
         // Define a RegisterRentalRequestDto
         RegisterRentalRequestDto request = new RegisterRentalRequestDto();
@@ -54,23 +55,24 @@ class RentalControllerTest {
 
 
         // Perform a POST request to the controller endpoint
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/rental/registerRental")
+        ResultActions resultActions;
+        resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/rental/registerRental")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\n" +
-                                "    \"date\":\"2023-02-20\",\n" +
-                                "    \"email\":\"samm85299@gmail.com\",\n" +
-                                "    \"totalPrice\":36,\n" +
-                                "    \"hourFinal\":\"23:00\",\n" +
-                                "    \"hourInit\":\"20:00\",\n" +
-                                "    \"imageUrl\":\"adsasd\",\n" +
-                                "    \"observation\":\"ninguna\",\n" +
-                                "    \"phone\":\"924773421\",\n" +
-                                "    \"room\":1,\n" +
-                                "    \"student\":1\n" +
-                                "}"))
-                .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
-    }*/
+                        .content("""
+                                {
+                                    "date":"2024-07-02",
+                                    "email":"pepe1@gmail.com",
+                                    "totalPrice":150,
+                                    "hourFinal":"09:00",
+                                    "hourInit":"14:00",
+                                    "imageUrl":"https://www.thespruce.com/thmb/iMt63n8NGCojUETr6.jpg",
+                                    "observation":"aaaa",
+                                    "phone":"999888777",
+                                    "room":1,
+                                    "student":1
+                                }"""))
+                .andExpect(status().isCreated());
+    }
     
     @Test
     void testGetRentalsByStudentId() throws Exception {
