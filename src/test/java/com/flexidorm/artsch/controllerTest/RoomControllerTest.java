@@ -40,12 +40,12 @@ public class RoomControllerTest {
     void testRegisterRoom() throws Exception {
         // Crear una instancia válida de RegisterRoomRequestDto
         RegisterRoomRequestDto request = new RegisterRoomRequestDto();
-        request.setTitle("123");
-        request.setDescription("casanueva");
-        request.setAddress("lima peru");
-        request.setImageUrl("asdasdasd");
-        request.setPrice(12);
-        request.setNearUniversities("UPC");
+        request.setTitle("cuarto en san miguel");
+        request.setDescription("se alquila amplia habitacion para estudiantes");
+        request.setAddress("av. la marina 135");
+        request.setImageUrl("https://www.thespruce.com/thmb/iMt63n8NGCojUETr6-T8oj-5-ns=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/PAinteriors-7-cafe9c2bd6be4823b9345e591e4f367f.jpg");
+        request.setPrice(30);
+        request.setNearUniversities("UPC, PUCP, UNMSM");
         request.setArrenderId(2L);
 
         RegisterRoomResponseDto response = new RegisterRoomResponseDto();
