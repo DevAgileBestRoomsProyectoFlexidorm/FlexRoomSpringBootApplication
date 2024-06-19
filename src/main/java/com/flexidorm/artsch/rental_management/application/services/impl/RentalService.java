@@ -149,6 +149,8 @@ public class RentalService implements IRentalService {
             // Mapear la entidad actualizada a tu DTO
             var reservationResponseDto = modelMapper.map(updatedReservation, RegisterRentalResponseDto.class);
 
+            roomRepository.updateStatus(reservation.getRoom(), "free");
+
             return new ApiResponse<>("Rental was successfully update", EStatus.SUCCESS,reservationResponseDto );
         } else {
             throw new ApplicationException(HttpStatus.BAD_REQUEST,"Reservation not found with ID: " + reservationId);

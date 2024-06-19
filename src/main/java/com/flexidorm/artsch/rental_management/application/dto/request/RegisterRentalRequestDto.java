@@ -19,6 +19,8 @@ public class RegisterRentalRequestDto {
 
     private Date date;
 
+    private Date date2;
+
     @NotBlank(message = "Phone is required")
     @Size(min = 9, max = 9, message = "Phone must be between 9 characters")
     private String phone;
