@@ -75,7 +75,6 @@ public class UserService implements IUserService {
 
         //convertir el request (dto) a un objeto de tipo User (entity)
         var student = modelMapper.map(request, Student.class);
-        student.setEnabled(true);
 
         //establecer los roles
         var roles = roleRepository.findByName(ERole.ROLE_USER)
@@ -119,8 +118,6 @@ public class UserService implements IUserService {
 
         //convertir el request (dto) a un objeto de tipo User (entity)
         var arrender = modelMapper.map(request, Arrender.class);
-        arrender.setEnabled(true);
-
         //establecer los roles
         var roles = roleRepository.findByName(ERole.ROLE_USER)
                 .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND, "No se pudo registrar el usuario, no se encontró el rol USER"));
@@ -255,8 +252,7 @@ public class UserService implements IUserService {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("No user with given id was found"));
 
-        //2) se elimina lógicamente el usuario
-        user.setEnabled(false);
+
         userRepository.save(user);
 
         return new ApiResponse<>("User was successfully deleted", EStatus.SUCCESS, null);
@@ -268,8 +264,6 @@ public class UserService implements IUserService {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("No user with given id was found"));
 
-        //2) se activa la cuenta del usuario
-        user.setEnabled(true);
 
         //3) guardar cambios
         var reactivatedUser = userRepository.save(user);

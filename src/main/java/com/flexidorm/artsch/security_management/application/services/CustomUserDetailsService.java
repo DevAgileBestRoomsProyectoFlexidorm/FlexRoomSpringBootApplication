@@ -33,7 +33,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .username(user.getEmail())
                 .password(user.getPassword())
                 .authorities(Utilities.mapRoles(user.getRoles()))
-                .disabled(!user.isEnabled())
                 .build();
     }
 }

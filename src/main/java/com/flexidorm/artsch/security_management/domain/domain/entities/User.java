@@ -52,7 +52,7 @@ public class User {
     private String profilePicture;
 
     @Column(nullable = false)
-    private boolean isEnabled;
+    private int isEnabled;
 
     @Column(nullable = false)
     private int isActive;
