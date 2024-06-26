@@ -1,8 +1,15 @@
 package com.flexidorm.artsch.security_management.infrastructure.repositories;
 
+import com.flexidorm.artsch.security_management.application.dto.response.ArrenderResponseDto;
 import com.flexidorm.artsch.security_management.domain.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
+import java.util.List;
 import java.util.Optional;
 
 public interface IUserRepository extends JpaRepository<User, Long> {
@@ -48,6 +55,18 @@ public interface IUserRepository extends JpaRepository<User, Long> {
      * @return Un usuario
      */
     Optional<User> findByUserId(Long arrenderId);
+
+    @Query("SELECT u FROM User u WHERE TYPE(u) IN (Arrender, Student)")
+    List<User> findAllArrendersAndStudent();
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE User u SET u.isActive = :status WHERE u.userId = :userId ")
+    void updateIsVerifiedForArrenderOrStudent(@Param("userId") int userId, @Param("status") boolean status);
+
+    @Query("SELECT u FROM User u WHERE u.userId = :userId")
+    Optional<User> findUserById(@Param("userId") int userId);
+
 
 
 }

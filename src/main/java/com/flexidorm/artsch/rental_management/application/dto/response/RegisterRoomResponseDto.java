@@ -19,5 +19,6 @@ public class RegisterRoomResponseDto {
     private double price;
     private String nearUniversities;
     private Long arrenderId;
+    private boolean isActive;
 
 }

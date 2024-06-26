@@ -39,6 +39,9 @@ public class Room {
 
     private String nearUniversities;
 
+    @Column(nullable = false)
+    private boolean isActive;
+
 
 
     //MUCHAS "habitaciones" van a estar en UN "arrendador"

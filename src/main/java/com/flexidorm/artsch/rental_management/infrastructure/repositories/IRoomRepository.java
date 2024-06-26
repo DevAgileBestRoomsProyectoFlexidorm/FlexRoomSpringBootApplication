@@ -4,6 +4,7 @@ import com.flexidorm.artsch.rental_management.domain.entities.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public interface IRoomRepository extends JpaRepository<Room, Long> {
         */
         List<Room> findByArrenderUserId(Long arrenderUserId);
 
-        List<Room> findByStatus(String status);
+        List<Room> findByStatusAndIsActive(String status,boolean activate);
         //Cambiar el status de la habitación
         @Transactional
         @Modifying
@@ -34,5 +35,14 @@ public interface IRoomRepository extends JpaRepository<Room, Long> {
 
         //Retornar habitaciones por id
         Optional<Room> findByRoomId(Long roomId);
+
+        @Modifying
+        @Transactional
+        @Query("UPDATE Room u SET u.isActive = :status WHERE u.roomId = :roomId ")
+        void updateIsVerifiedForRoom(@Param("roomId") int roomId, @Param("status") boolean status);
+
+        @Query("SELECT u FROM Room u WHERE u.roomId = :roomId")
+        Optional<Room> findRoomsById(@Param("roomId") int roomId);
+
 
 }
