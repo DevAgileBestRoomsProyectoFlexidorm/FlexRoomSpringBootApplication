@@ -26,6 +26,7 @@ public class UserSignInResponseDto {
     private String university;
     private boolean isVerified;
     private boolean isEnabled;
+    private boolean isActive;
     private String dtype;
     private String token;
 }

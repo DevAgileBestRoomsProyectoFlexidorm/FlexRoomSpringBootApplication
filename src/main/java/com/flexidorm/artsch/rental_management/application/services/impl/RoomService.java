@@ -80,7 +80,7 @@ public class RoomService implements IRoomService {
     @Override
     public ApiResponse<List<RegisterRoomResponseDto>>getByState(String status){
 
-        List<Room> rooms=roomRepository.findByStatus(status);
+        List<Room> rooms=roomRepository.findByStatusAndIsActive(status,true);
 
         List<RegisterRoomResponseDto> roomResponseList = rooms.stream()
                 .map(room -> modelMapper.map(room, RegisterRoomResponseDto.class))

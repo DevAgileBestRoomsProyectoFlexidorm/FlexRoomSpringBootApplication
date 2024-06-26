@@ -26,4 +26,5 @@ public class ArrenderResponseDto {
     private String profilePicture;
     private EGender gender;
     private boolean isVerified;
+    private boolean isActive;
 }

@@ -159,6 +159,10 @@ public class UserService implements IUserService {
             var userResponseDto = modelMapper.map(authenticatedUserData, UserSignInResponseDto.class);
             userResponseDto.setToken(token);
 
+            if (!userResponseDto.isActive()) {
+                throw new ApplicationException(HttpStatus.ACCEPTED, "El usuario se encuentra en suspensión");
+            }
+
             //4) obtener el tipo de usuario
             var dtype = userRepository.findByUserId(authenticatedUserData.getUserId()).get().getClass().getSimpleName();
             userResponseDto.setDtype(dtype);
@@ -169,10 +173,14 @@ public class UserService implements IUserService {
             var mensaje=ex.getMessage();
             if("Credenciales erróneas".equals(mensaje)){
                 throw new ApplicationException(HttpStatus.ACCEPTED, ex.getMessage());
-            }else{
-                throw new ApplicationException(HttpStatus.BAD_REQUEST, ex.getMessage());
+            }else
+            if("El usuario se encuentra en suspensión".equals(mensaje)){
+                throw new ApplicationException(HttpStatus.ACCEPTED, ex.getMessage());
+            }else  {
+                    throw new ApplicationException(HttpStatus.BAD_REQUEST, ex.getMessage());
+                }
             }
-        }
+
     }
 
     @Override

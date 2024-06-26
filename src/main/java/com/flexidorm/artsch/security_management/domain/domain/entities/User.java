@@ -18,6 +18,7 @@ import java.util.Set;
 //se creará una sola tabla para todas las clases que hereden de esta
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -52,6 +53,9 @@ public class User {
 
     @Column(nullable = false)
     private boolean isEnabled;
+
+    @Column(nullable = false)
+    private boolean isActive;
     
     //se tomará como un String los valores de este enum
     @Enumerated(EnumType.STRING)
