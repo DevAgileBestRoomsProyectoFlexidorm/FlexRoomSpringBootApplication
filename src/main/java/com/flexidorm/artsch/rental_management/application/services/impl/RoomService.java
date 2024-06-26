@@ -42,6 +42,7 @@ public class RoomService implements IRoomService {
         // Crear una nueva instancia de Room y configurar sus propiedades
         Room room = new Room();
         room.setTitle(request.getTitle());
+        room.setIsActive(1);
         room.setDescription(request.getDescription());
         room.setImageUrl(request.getImageUrl());
         room.setAddress(request.getAddress());
@@ -80,7 +81,7 @@ public class RoomService implements IRoomService {
     @Override
     public ApiResponse<List<RegisterRoomResponseDto>>getByState(String status){
 
-        List<Room> rooms=roomRepository.findByStatusAndIsActive(status,true);
+        List<Room> rooms=roomRepository.findByStatusAndIsActive(status,1);
 
         List<RegisterRoomResponseDto> roomResponseList = rooms.stream()
                 .map(room -> modelMapper.map(room, RegisterRoomResponseDto.class))

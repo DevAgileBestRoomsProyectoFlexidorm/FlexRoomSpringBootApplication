@@ -16,6 +16,6 @@ public interface IAdminService {
     ApiResponse<List<RegisterRoomResponseDto>>getAllRooms();
 
     ApiResponse<List<RegisterRentalResponseDto>>getAllRental();
-    ApiResponse<List<ArrenderResponseDto>> deleteUserById(int userId, boolean status);
-    ApiResponse<List<RegisterRoomResponseDto>> deleteRoomById(int roomId, boolean status);
+    ApiResponse<List<ArrenderResponseDto>> deleteUserById(int userId, int status);
+    ApiResponse<List<RegisterRoomResponseDto>> deleteRoomById(int roomId, int status);
 }

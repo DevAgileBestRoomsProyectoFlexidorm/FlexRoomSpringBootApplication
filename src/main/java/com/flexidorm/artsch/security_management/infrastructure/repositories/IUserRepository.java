@@ -62,7 +62,7 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Transactional
     @Query("UPDATE User u SET u.isActive = :status WHERE u.userId = :userId ")
-    void updateIsVerifiedForArrenderOrStudent(@Param("userId") int userId, @Param("status") boolean status);
+    void updateIsVerifiedForArrenderOrStudent(@Param("userId") int userId, @Param("status") int status);
 
     @Query("SELECT u FROM User u WHERE u.userId = :userId")
     Optional<User> findUserById(@Param("userId") int userId);

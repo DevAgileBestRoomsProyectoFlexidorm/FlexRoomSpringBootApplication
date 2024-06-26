@@ -40,7 +40,7 @@ public class Room {
     private String nearUniversities;
 
     @Column(nullable = false)
-    private boolean isActive;
+    private int isActive;
 
 
 

@@ -26,7 +26,7 @@ public interface IRoomRepository extends JpaRepository<Room, Long> {
         */
         List<Room> findByArrenderUserId(Long arrenderUserId);
 
-        List<Room> findByStatusAndIsActive(String status,boolean activate);
+        List<Room> findByStatusAndIsActive(String status,int activate);
         //Cambiar el status de la habitación
         @Transactional
         @Modifying
@@ -39,7 +39,7 @@ public interface IRoomRepository extends JpaRepository<Room, Long> {
         @Modifying
         @Transactional
         @Query("UPDATE Room u SET u.isActive = :status WHERE u.roomId = :roomId ")
-        void updateIsVerifiedForRoom(@Param("roomId") int roomId, @Param("status") boolean status);
+        void updateIsVerifiedForRoom(@Param("roomId") int roomId, @Param("status") int status);
 
         @Query("SELECT u FROM Room u WHERE u.roomId = :roomId")
         Optional<Room> findRoomsById(@Param("roomId") int roomId);

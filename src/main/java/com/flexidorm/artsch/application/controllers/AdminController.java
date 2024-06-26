@@ -49,14 +49,26 @@ public class AdminController {
     @Operation(summary = "Activate and Desactivate account")
     @PostMapping("/acUnAccount/{userId}/{status}")
     public ResponseEntity<ApiResponse<List<ArrenderResponseDto>>> updateAccountAll(@PathVariable int userId, @PathVariable boolean status){
-        var res = adminService.deleteUserById(userId, status);
+        var statusvalue=0;
+        if(status){
+           statusvalue=1;
+        }else{
+            statusvalue=0;
+        }
+        var res = adminService.deleteUserById(userId, statusvalue);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @Operation(summary = "Activate and Desactivate room")
     @PostMapping("/acUnRooms/{roomId}/{status}")
     public ResponseEntity<ApiResponse<List<RegisterRoomResponseDto>>> deleteRoomById(@PathVariable int roomId, @PathVariable boolean status){
-        var res = adminService.deleteRoomById(roomId, status);
+        var statusvalue=0;
+        if(status){
+            statusvalue=1;
+        }else{
+            statusvalue=0;
+        }
+        var res = adminService.deleteRoomById(roomId, statusvalue);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 }

@@ -82,6 +82,8 @@ public class UserService implements IUserService {
                 .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND, "No se pudo registrar el usuario, no se encontró el rol USER"));
         student.setRoles(Collections.singleton(roles)); //establece un solo rol
 
+        student.setIsActive(1);
+
         //guarda el Student
         var studentCreated = userRepository.save(student);
 
@@ -124,6 +126,7 @@ public class UserService implements IUserService {
                 .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND, "No se pudo registrar el usuario, no se encontró el rol USER"));
         arrender.setRoles(Collections.singleton(roles)); //establece un solo rol
 
+        arrender.setIsActive(1);
         //guarda el Arrender
         var arrenderCreated = userRepository.save(arrender);
 

@@ -73,7 +73,7 @@ public class AdminService implements IAdminService {
     }
 
     @Override
-    public ApiResponse<List<ArrenderResponseDto>> deleteUserById(int userId, boolean status) {
+    public ApiResponse<List<ArrenderResponseDto>> deleteUserById(int userId, int status) {
         userRepository.updateIsVerifiedForArrenderOrStudent(userId, status);
         Optional<User> users= userRepository.findUserById(userId);
 
@@ -83,7 +83,7 @@ public class AdminService implements IAdminService {
     }
 
     @Override
-    public ApiResponse<List<RegisterRoomResponseDto>> deleteRoomById(int roomId, boolean status) {
+    public ApiResponse<List<RegisterRoomResponseDto>> deleteRoomById(int roomId, int status) {
         iRoomRepository.updateIsVerifiedForRoom(roomId, status);
         Optional<Room> rooms= iRoomRepository.findRoomsById(roomId);
 

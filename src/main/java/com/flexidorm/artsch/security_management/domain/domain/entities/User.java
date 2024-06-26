@@ -55,7 +55,7 @@ public class User {
     private boolean isEnabled;
 
     @Column(nullable = false)
-    private boolean isActive;
+    private int isActive;
     
     //se tomará como un String los valores de este enum
     @Enumerated(EnumType.STRING)
